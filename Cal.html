@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+</head>
+<style>
+	*{
+    	box-sizing: border-box;
+	}
+	h1{
+	    text-align: center;
+	}
+	.cal{
+	    width: 500px;
+	    margin: 0 auto;
+	}
+	.button_Wrap{
+	    display: grid;
+	    grid-template-columns: repeat(4,1fr);
+	}
+	.ac{
+	    grid-column: 1/4;
+	   	background-color: red;
+	   	color:white;
+	}
+	.zero{
+	    grid-column: 1/3;
+	}
+	button{
+	    height: 100px;
+	    outline: none;
+	    font-size: 25px;
+	    font-weight: bold;   
+	}
+	.display{
+		height: 100px
+	}
+	#calDisplay,#result{
+	    width: 100%;
+	    height:50px;
+	    background-color:darkgray;
+	    text-align: right;
+	    font-size: 30px;
+	    font-weight: bold; 
+	}
+    #calDisplay{
+        color: rgba(255, 255, 255, 0.5);
+    }
+	button:hover{
+	    opacity: 0.5;
+	}
+	button:nth-child(4n+2),button:last-child{
+	    background-color: orange;
+	}
+</style>
+<body>
+    <h1>계산기</h1>
+    <div class="cal">
+    	<div class="display">
+    		<div id="calDisplay"></div>
+        	<div id="result"></div>
+    	</div>
+        <div class="button_Wrap">
+            <button class="ac" onclick="clean();">AC</button>
+            <button onclick="oper('/');">&divide;</button>
+            <button class="num">7</button>
+            <button class="num">8</button>
+            <button class="num">9</button>
+            <button onclick="oper('*')">X</button>
+            <button class="num">4</button>
+            <button class="num">5</button>
+            <button class="num">6</button>
+            <button onclick="oper('-');">-</button>
+            <button class="num">1</button>
+            <button class="num">2</button>
+            <button class="num">3</button>
+            <button onclick="oper('+');">+</button>
+            <button class="zero num">0</button>
+            <button id="dot">.</button>
+            <button onclick="resultText();">=</button>
+        </div>
+    </div>
+    <script type="text/javascript">
+    /*    
+    1. AC버튼을 누르면 화면 초기화 ok
+    2. 숫자버튼을 누르면 화면에 나오게한다. ok
+        document.querySelectorAll(클래스이름)
+        => 클래스가 같은 것들을 Array파일로 가져옴
+    3. 점누르면 숫자안에 들어가는 것 ok
+    4. 사칙연산 ok
+	*/
+	let display = document.getElementById('calDisplay');
+	let result = document.getElementById('result');
+    let operTemp;
+	let temp;
+	let cal;
+	
+	document.querySelectorAll('.num').forEach(function(element) {
+	   element.addEventListener("click",function(){
+	       if(display.innerHTML.length > 10){
+	            return alert("최대 입력 범위를 초과했습니다.");
+	       }
+			
+	       result.innerHTML += element.innerHTML;
+	   }); 
+	});
+	
+	document.getElementById("dot").addEventListener("click",function(){
+	    if(display.innerHTML.includes(".")){return}
+	    display.innerHTML += ".";
+	});
+	
+	function clean(){
+	    display.innerHTML="";
+	    result.innerHTML = "";
+	}
+	
+	function oper(sign){
+        if(result.textContent.length == 0){
+            return
+        }
+		operTemp = display.textContent + result.textContent
+		result.innerHTML = "";
+	    display.innerHTML = operTemp + sign;
+	}
+	
+	
+	function resultText(){
+        if(result.textContent.length == 0){
+            return
+        }
+	    temp = display.textContent + result.textContent;
+	    cal= eval(temp);
+	    result.innerHTML = cal;
+        display.innerHTML = "";
+	}
+	</script>
+</body>
+
+</html>
